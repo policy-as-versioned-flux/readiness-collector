@@ -87,4 +87,5 @@ kubectl create configmap "readiness-$CANDIDATE_VERSION" -n "$NAMESPACE" \
   --from-file=readiness.json=readiness.json \
   --dry-run=client -o yaml | kubectl apply -f -
 
-echo "== done: candidate $CANDIDATE_VERSION, $(jq '[.[] | select(.ready == false)] | length' <<<"$teams_json") team(s) not ready =="
+not_ready=$(echo "$teams_json" | jq '[.[] | select(.ready == false)] | length')
+echo "== done: candidate $CANDIDATE_VERSION, $not_ready team(s) not ready =="
