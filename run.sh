@@ -67,14 +67,11 @@ teams_json=$(jq -c --slurpfile resfiles name-to-app.json '
      | {team: ($name_to_app[$rname] // "unknown"), result: .result}]
   | group_by(.team)
   | map({
-      key: .[0].team,
-      value: {
-        pass: (map(select(.result == "pass")) | length),
-        fail: (map(select(.result == "fail")) | length)
-      }
+      team: .[0].team,
+      pass: (map(select(.result == "pass")) | length),
+      fail: (map(select(.result == "fail")) | length)
     })
-  | from_entries
-  | with_entries(.value.ready = (.value.fail == 0))
+  | map(.ready = (.fail == 0))
 ' report.json)
 
 payload=$(jq -n --arg v "$CANDIDATE_VERSION" --arg t "$CANDIDATE_TAG" --argjson teams "$teams_json" \
