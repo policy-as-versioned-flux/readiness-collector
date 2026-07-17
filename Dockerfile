@@ -1,7 +1,7 @@
 # Ticket 10 (real-estate): pinned toolchain, same governed-dependency
 # posture as every other component here (checksummed binaries, no
 # marketplace actions / unpinned apk packages for the tools that matter).
-FROM alpine:3.20
+FROM alpine:3.24
 RUN apk add --no-cache git jq curl bash
 
 ARG KYVERNO_VERSION=1.18.2
